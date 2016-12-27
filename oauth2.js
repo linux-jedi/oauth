@@ -6,14 +6,15 @@ var models = require('./models');
 // Create oauth2 server
 var server = oauth2orize.createServer();
 
+
 // Establish some way to serialize/deserialize client
 // client <-> clientId
-server.serializeClient(function(client, dome) {
-    return done(null, client.id);
+server.serializeClient(function(client, done) {
+    return done(null, 1024);
 });
 
 server.deserializeClient(function(id, done) {
-    return done(null, client);
+    return done(null, {client: "caleb"});
 });
 
 /**
@@ -26,6 +27,7 @@ server.exchange(oauth2orize.exchange.password( function(client, username, passwo
     // Validate client
     // then Validate user
     // then Return token
+    done(null, {token:"tokenValue"});
 }));
 
 // authorization endpoint is not needed

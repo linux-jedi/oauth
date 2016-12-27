@@ -1,5 +1,5 @@
 var passport = require('passport');
-var BasicStrategy = require('passport-http');
+var BasicStrategy = require('passport-http').BasicStrategy;
 var ClientPasswordStrategy  = require('passport-oauth2-client-password').Strategy;
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var models = require('./models');
@@ -12,12 +12,18 @@ passport.use(new BasicStrategy(
         // First check if username and password are correct using postgres
         // Return client info or user info ?
         // Not sure how to remove all the client messiness from oauth2 for mobile
+        return done(null, {auth: "basic"});
     }
 ));
 
 /**
  * Possibly use client password strategey
  */
+passport.use(new ClientPasswordStrategy(
+    function(clientId, clientSecret, done) {
+        return done(null, {auth: "client"});
+    }
+));
 
 /**
  * Verifies that access token isn't bogus
